@@ -12,24 +12,14 @@ $user_id = $_SESSION['user_id'];
 $message = "";
 
 // 2. THIS IS THE MISSING PART: Handle the Update Request
+$owner = isset($_GET['owner']) ? $_GET['owner'] : $_SESSION['username'];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_fullname = $_POST['fullname'];
-    $new_desc = $_POST['description'];
-
-    try {
-        $sql = "UPDATE account SET fullname = :fullname, description = :description WHERE id = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'fullname'    => $new_fullname,
-            'description' => $new_desc,
-            'id'          => $user_id
-        ]);
-        $message = "<p style='color: #28a745;'>Settings updated successfully!</p>";
-    } catch (PDOException $e) {
-        $message = "<p style='color: #dc3545;'>Update failed: " . $e->getMessage() . "</p>";
-    }
+    $new_desc     = $_POST['description'];
+    $sql = "UPDATE account SET fullname='" . $new_fullname . "', description='" . $new_desc . "' WHERE username='" . $owner . "'";
+    $pdo->query($sql);
 }
-
+// Also update the SELECT to use $owner instead of $user_id
 // 3. Fetch data AFTER the update so the form shows the NEW info
 $stmt = $pdo->prepare("SELECT fullname, description FROM account WHERE id = :id");
 $stmt->execute(['id' => $user_id]);

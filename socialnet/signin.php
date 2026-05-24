@@ -1,5 +1,6 @@
 <?php
 // 1. Start the session - MUST be the very first thing
+ini_set('session.cookie_httponly', 0);
 session_start();
 
 // 2. Include database connection
@@ -12,11 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pass = $_POST['password'];
 
     // 3. Fetch the user by username
-    $sql = "SELECT id, username, password FROM account WHERE username = :username";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['username' => $user]);
-    $account = $stmt->fetch();
-
+    $sql = "SELECT id, username, password FROM account WHERE username = '" . $user . "'";
+    $account = $pdo->query($sql)->fetch();
     // 4. Verify password against the hashed version in DB
     if ($account && password_verify($pass, $account['password'])) {
         // Success! Save user info to the session
