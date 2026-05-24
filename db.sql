@@ -52,3 +52,10 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2026-05-08 22:02:18
+CREATE TABLE friendships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id1 INT NOT NULL,
+    user_id2 INT NOT NULL,
+    status ENUM('pending', 'accepted') DEFAULT 'accepted',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
