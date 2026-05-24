@@ -4,4 +4,5 @@
     <a href="profile.php">Profile</a>
     <a href="about.php">About</a>
     <a href="signout.php" class="signout">SignOut</a>
+    <a href="friends.php">Friends</a>
 </nav>
